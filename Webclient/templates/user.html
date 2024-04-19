@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of Departments</title>
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+    <h1>List of Departments</h1>
+    <div class="button-container">
+        <a href="/add" class="add-button">Add User</a>
+    </div>
+    <form method="POST">
+        <table class="cart">
+            <thead>
+                <tr>
+                    <th>FirstName</th>
+                    <th>LastName</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user['FirstName'] }}</td>
+                    <td>{{ user['LastName'] }}</td>
+                    <td>{{ user['UserEmail'] }}</td>
+                    <td>{{ user['Password'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+</body>
+</html>
