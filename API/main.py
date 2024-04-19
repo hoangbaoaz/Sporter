@@ -44,35 +44,35 @@ def add_users():
 # Define the route for login
 
 
-@app.route('/users/login', methods=['POST'])
-def api_login():
-    UserEmail = request.json.get('UserEmail')
-    Password = request.json.get('Password')
-
-    if UserEmail and Password:
-        if check_exists(UserEmail, Password):
-            session['UserEmail'] = UserEmail
-            return jsonify({'success': True, 'message': 'Login successful'}), 200
-        else:
-            return jsonify({'success': False, 'message': 'Invalid username or password'}), 401
-    else:
-        return jsonify({'success': False, 'message': 'Username and password are required'}), 400
-
-def check_exists(UserEmail, Password):
-    conn = sqlite3.connect(sqldbname)
-    cursor = conn.cursor()
-
-    sqlcommand = "SELECT * FROM Users WHERE UserEmail = ? AND Password = ?"
-    cursor.execute(sqlcommand, (UserEmail, Password))
-    data = cursor.fetchall()
-
-    if len(data) > 0:
-        result = True
-    else:
-        result = False
-
-    conn.close()
-    return result
+# @app.route('/users/login', methods=['POST'])
+# def api_login():
+#     UserEmail = request.json.get('UserEmail')
+#     Password = request.json.get('Password')
+#
+#     if UserEmail and Password:
+#         if check_exists(UserEmail, Password):
+#             session['UserEmail'] = UserEmail
+#             return jsonify({'success': True, 'message': 'Login successful'}), 200
+#         else:
+#             return jsonify({'success': False, 'message': 'Invalid username or password'}), 401
+#     else:
+#         return jsonify({'success': False, 'message': 'Username and password are required'}), 400
+#
+# def check_exists(UserEmail, Password):
+#     conn = sqlite3.connect(sqldbname)
+#     cursor = conn.cursor()
+#
+#     sqlcommand = "SELECT * FROM Users WHERE UserEmail = ? AND Password = ?"
+#     cursor.execute(sqlcommand, (UserEmail, Password))
+#     data = cursor.fetchall()
+#
+#     if len(data) > 0:
+#         result = True
+#     else:
+#         result = False
+#
+#     conn.close()
+#     return result
 
 @app.route('/products', methods = ['GET'])
 def get_products():
@@ -136,6 +136,54 @@ def ao_clb(id):
     else:
         return "product not found", 404
 
+
+# @app.route('/login', methods=['POST'])
+# def login():
+#     # Khi nhận dữ liệu từ hành vi post, sau khi nhận dữ liệu
+#     # từ session sẽ gọi định tuyến sang trang index
+#     UserEmail = request.json.get('UserEmail')
+#     Password = request.json.get('Password')
+#
+#     # Store 'username' in the session
+#     obj_user = get_obj_user(UserEmail, Password)
+#     if obj_user is not None:
+#         obj_user = {
+#             "id": obj_user[0],
+#             "UserEmail": obj_user[3],
+#             "Password": obj_user[4]
+#         }
+#         session['current_user'] = obj_user
+#         return jsonify(obj_user)
+#     else:
+#         return jsonify({"error": "Invalid credentials"})
+#
+#
+# def check_exists(UserEmail, Password):
+#     result = False
+#     # Khai bao bien de tro toi db
+#     conn = sqlite3.connect(sqldbname)
+#     cursor = conn.cursor()
+#     sqlcommand = "SELECT * FROM users WHERE UserEmail = ? AND Password = ?"
+#     cursor.execute(sqlcommand, (UserEmail, Password))
+#     data = cursor.fetchall()
+#     if len(data) > 0:
+#         result = True
+#     conn.close()
+#     return result
+#
+#
+# def get_obj_user(UserEmail, Password):
+#     result = None
+#     # Khai bao bien de tro toi db
+#     conn = sqlite3.connect(sqldbname)
+#     cursor = conn.cursor()
+#     sqlcommand = "SELECT * FROM users WHERE UserEmail = ? AND Password = ?"
+#     cursor.execute(sqlcommand, (UserEmail, Password))
+#     obj_user = cursor.fetchone()
+#     if obj_user is not None:
+#         result = obj_user
+#     conn.close()
+#     return result
 
 
 if __name__ == '__main__':

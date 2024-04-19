@@ -22,7 +22,7 @@
         <tr>
             <th>Image</th>
             <th>ID</th>
-            <th>Name</th>
+            <th>Product</th>
             <th>Price</th>
             <th>Quantity</th>
             <th>Update Quantity</th>
@@ -37,7 +37,7 @@
                              alt="{{ product['picture'] }}">
                 </td>
                 <td>{{ product['id'] }}</td>
-                <td>{{ product['title'] }}</td>
+                <td>{{ product['name'] }}</td>
                 <td>${{ product['price'] }}</td>
                 <td>{{ product['quantity'] }}</td>
                 <td>
@@ -57,5 +57,9 @@
         </table>
         <input type="submit" value="Update Cart">
     </form>
+    <h1>Create Order</h1>
+        <form method="POST" action="{{ url_for('proceed_cart') }}">
+            <input type="submit" value="Proceed Cart">
+        </form>
 </body>
 </html>

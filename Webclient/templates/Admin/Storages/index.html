@@ -14,8 +14,7 @@
     <div class="menu">
     <ul>
         {% for storage in storages %}
-        <a href="{{ storage['img'] }}"></a>
-            <li> {{ storage['title'] }} ({{ storage['price'] }})
+            <li><img src="{{ storage['img1'] }}" alt="">   {{ storage['title'] }} ({{ storage['price'] }})
                 <form action="/delete/{{ storage['id'] }}" method="POST" style="display:inline;">
                     <button type="submit">Delete</button>
                 </form>

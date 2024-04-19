@@ -44,7 +44,7 @@ def register():
             # check if the response is successful:
             if response.status_code == 200:
                 user = response.json()
-                flash(f"User  added successfully")
+                flash(f"User added successfully")
                 return redirect('/')
             else:
                 flash('somthing went wrong. please try again later')
@@ -61,7 +61,7 @@ def login():
     if request.method == 'POST':
         UserEmail = request.form['UserEmail']
         Password = request.form['Password']
-        # Store 'username' in the session
+
         obj_user = get_obj_user(UserEmail,Password)
         if obj_user is not None:
             obj_user = {
@@ -103,6 +103,11 @@ def get_obj_user(UserEmail, Password):
         result = obj_user
     conn.close()
     return result;
+@app.route('/logout')
+def logout():
+    session.pop('current_user', None)
+    # Remove 'username' from the session
+    return redirect(url_for('index'))
 
 @app.route('/searchData', methods=['POST'])
 def searchData():
@@ -250,7 +255,91 @@ def update_cart():
     session['cart'] = new_cart
     # 5.Redirect to the shopping cart page (or wherever you want)
     return redirect(url_for('view_cart'))
+@app.route('/proceed_cart', methods=['POST'])
+def proceed_cart():
+    # 1. Retrieve the user ID from the session:
+    if 'current_user' in session:
+        user_id = session['current_user']['id']
+        user_email = session['current_user']['email']
+    else:
+        user_id = 0
+        user_email = "";
+    # 2. Get the shopping cart from the session
+    current_cart = []
+    if 'cart' in session:
+        shopping_cart  = session.get("cart", [])
+    # 3.: Save Order Information to the "order" Table
+    # Establish a database connection
 
+    conn = sqlite3.connect(sqldbname)
+    cursor = conn.cursor()
+    # Define the order information (Create a new form)
+    user_address = "User Address"  # Replace this with the actual address from the session
+    user_mobile = "User Mobile"  # Replace this with the actual mobile number from the session
+    purchase_date = "2023-10-10"  # Replace this with the actual purchase date
+    ship_date = "2023-10-15"  # Replace this with the actual ship date
+    status = 1  # Replace this with the actual status (e.g., processing, shipped, etc.)
+    # Insert the order into the "order" table
+    cursor.execute('''
+        INSERT INTO "orders" (UserID, UserEmail, UserAddress, 
+        UserPhone, PurchaseDate, ShipDate, status)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    ''', (user_id, user_email, user_address,
+          user_mobile, purchase_date, ship_date, status))
+    # 4. Get the ID of the inserted order
+    order_id = cursor.lastrowid
+    print(order_id)
+    # Commit the changes and close the connection
+    conn.commit()
+    conn.close()
+    #5: Save Order Details to the "order_details" Table
+    # Establish a new database connection (or reuse the existing connection)
+    conn = sqlite3.connect(sqldbname)
+    cursor = conn.cursor()
+    # Insert order details into the "order_details" table
+    for product in shopping_cart:
+        product_id = product['id']
+        price = product['price']
+        quantity = product['quantity']
+        cursor.execute('''
+            INSERT INTO order_details (order_id, product_id, price, quantity)
+            VALUES (?, ?, ?, ?)
+        ''', (order_id, product_id, price, quantity))
+    # 6. Commit the changes and close the connection
+    conn.commit()
+    conn.close()
+    # 7. To remove the current_cart from the session
+    if 'cart' in session:
+        current_cart = session.pop("cart", [])
+    else:
+        print("No current_cart in session.")
+    #Call to orders/order_id
+    order_url = url_for('orders', order_id=order_id, _external=True)
+    return f'Redirecting to order page: <a href="{order_url}">{order_url}</a>'
+
+@app.route('/orders/', defaults={'order_id': None}, methods=['GET'])
+@app.route('/orders/<int:order_id>/', methods=['GET'])
+def orders(order_id):
+    sqldbname = 'db/website.db'
+    #if 'current_user' in session:
+    #    user_id = session['current_user']['id']
+    user_id = session.get('current_user', {}).get('id')
+    if user_id:
+        conn = sqlite3.connect(sqldbname)
+        cursor = conn.cursor()
+        if order_id is not None:
+            cursor.execute('SELECT * FROM "order" WHERE id = ? AND user_id = ?', (order_id, user_id))
+            order = cursor.fetchone()
+            cursor.execute('SELECT * FROM order_details WHERE order_id = ?', (order_id,))
+            order_details = cursor.fetchall()
+            conn.close()
+            return render_template('order_details.html', order=order, order_details=order_details)
+        else:
+            cursor.execute('SELECT * FROM "order" WHERE user_id = ?', (user_id,))
+            user_orders = cursor.fetchall()
+            conn.close()
+            return render_template('orders.html', orders=user_orders)
+    return "User not logged in."
 
 
 if __name__== '__main__':
