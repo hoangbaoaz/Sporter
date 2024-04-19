@@ -17,10 +17,6 @@ def changeToLogin():
 def seeDetails():
     return render_template('returnAndExchange.html')
 
-
-
-
-
 @app.route('/searchPage')
 def searchPage():
     return render_template('SearchWithCSSDataDBAddToCartTable.html')
@@ -44,14 +40,17 @@ def index():
     products = cursor.fetchall()
     conn.close()
 
-    # Check if 'username' key exists in the session
+    # Check if 'current_user' key exists in the session
     if 'current_user' in session:
         current_username = session['current_user']['name']
     else:
         current_username = ""
 
-    # Render the index.html template with products and username
-    return render_template('index.html', products=products, search_text="", user_name=current_username)
+    # Render the appropriate template based on the session
+    if current_username:
+        return render_template('index.html', products=products, search_text="", user_name=current_username)
+    else:
+        return render_template('SearchWithCSSDataDBAddToCartTable.html', search_text="", user_name="")
 
 @app.route('/search_pr')
 def search_pr():
@@ -63,15 +62,7 @@ def search_pr():
         'SearchWithCSSDataDBAddToCartTable.html',
         search_text="",
         user_name = current_username)
-@app.route('/get_pr', methods = ['GET'])
-def get_pr():
-    response = requests.get('http://127.0.0.1:5000/products')
-    if response.status_code == 200:
-        products = response.json()
-        return render_template('user.html', products = products)
-    else:
-        flash('st went wrong')
-    return render_template('user.html')
+
 @app.route('/add', methods = ['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -99,23 +90,26 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # Khi nhận dữ liệu từ hành vi post, sau khi nhận dữ liệu
-    # từ session sẽ gọi định tuyến sang trang index
     if request.method == 'POST':
         UserEmail = request.form['UserEmail']
         Password = request.form['Password']
 
-        obj_user = get_obj_user(UserEmail,Password)
+        obj_user = get_obj_user(UserEmail, Password)
         if obj_user is not None:
             obj_user = {
-                "id" :obj_user[0],
-                "name" : obj_user[1],
+                "id": obj_user[0],
+                "name": obj_user[1],
                 "email": obj_user[2]
             }
             session['current_user'] = obj_user
-        return redirect(url_for('index'))
-    # Trường hợp mặc định là vào trang login
+            # Redirect to the main page after successful login
+            return redirect('/')
+        else:
+            flash('Invalid email or password. Please try again.')
+
+    # Default case: render the login page
     return render_template('login.html')
+
 
 
 def check_exists(UserEmail, Password):
