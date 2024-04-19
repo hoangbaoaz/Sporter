@@ -339,7 +339,7 @@ def proceed_cart():
         price = product['price']
         quantity = product['quantity']
         cursor.execute('''
-            INSERT INTO order_details (order_id, product_id, price, quantity)
+            INSERT INTO order_detail (order_id, product_id, price, quantity)
             VALUES (?, ?, ?, ?)
         ''', (order_id, product_id, price, quantity))
     # 6. Commit the changes and close the connection
@@ -364,7 +364,7 @@ def orders(order_id):
         conn = sqlite3.connect(sqldbname)
         cursor = conn.cursor()
         if order_id is not None:
-            cursor.execute('SELECT * FROM "order" WHERE id = ? AND user_id = ?', (order_id, user_id))
+            cursor.execute('SELECT * FROM "order" WHERE id = ? AND UserID = ?', (order_id, user_id))
             order = cursor.fetchone()
             cursor.execute('SELECT * FROM order_detail WHERE order_id = ?', (order_id,))
             order_details = cursor.fetchall()
