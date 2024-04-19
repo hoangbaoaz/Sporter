@@ -6,6 +6,8 @@
     filename='style_cart.css') }}">
     <link rel="stylesheet" href="{{ url_for('static',
     filename='styles_product.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',
+    filename='styles.css') }}">
 </head>
 <body>
     <h3>
@@ -57,9 +59,6 @@
         </table>
         <input type="submit" value="Update Cart">
     </form>
-    <h1>Create Order</h1>
-        <form method="POST" action="{{ url_for('proceed_cart') }}">
-            <input type="submit" value="Proceed Cart">
-        </form>
+
 </body>
 </html>

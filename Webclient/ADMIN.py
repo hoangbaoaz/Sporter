@@ -63,7 +63,7 @@ def edit(id):
     if request.method == 'POST':
         title = request.form['title']
         price = request.form['price']
-        img = request.form['img']
+        img = request.form['img1']
 
         connection = get_db_connection()
         cursor = connection.cursor()

@@ -6,10 +6,75 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='search-result.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style_table_dataframe.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style_cart.css') }}">
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: blue;
+}
+
+.shopping-cart-icon {
+    width: 30px;
+    height: 30px;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="number"],
+button {
+    margin: 5px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* search-result.css */
+.cart {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.cart th, .cart td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+img {
+    width: 300px;
+    height: 300px;
+}
+    </style>
 </head>
 <body>
-    <h1>Search Example with Flask</h1>
-<!--     <h3>-->
+
+
 <!--        {% if user_name %}-->
 <!--            Hello, {{ user_name }} <a href="/logout">Logout</a>-->
 <!--        {%  else  %}-->
@@ -18,16 +83,10 @@
 <!--    </h3>-->
     <a href="{{ url_for('view_cart') }}">View Cart</a>
     <a href="{{ url_for('view_cart') }}">
-        <img class="shopping-cart-icon"
-        src="/static/cart.png"
-             alt="Shopping Cart">
+
     </a>
 
-    <!--
-     <form method="Submit" action="/viewcart">
-        <button type="submit">View Cart</button>
-    </form>
-    -->
+
     <form method="POST" action="/searchData">
         <input type="text" name="searchInput"
                placeholder="Enter your search term">
@@ -67,5 +126,3 @@
         </p>
 </body>
 </html>
-
-
