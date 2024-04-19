@@ -8,9 +8,53 @@ app.secret_key = "your_secret_key"
 base_url = 'http://127.0.0.1:5000/users'
 sqldbname = '../db/products.db'
 
+@app.route('/changeToLogin')
+def changeToLogin():
+    return render_template('login.html')
+
+# hiển thị page detail
+@app.route('/seeDetails')
+def seeDetails():
+    return render_template('returnAndExchange.html')
+
+
+
+
+
+@app.route('/searchPage')
+def searchPage():
+    return render_template('SearchWithCSSDataDBAddToCartTable.html')
+# chuyển hướng page áo câu lạc bộ
+@app.route('/aoClb')
+def aoClb():
+    conn = sqlite3.connect(sqldbname)
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM products WHERE id <= 12')
+    products = cursor.fetchall()
+    conn.close()
+    return render_template('aoCLB.html', products=products)
+
+# lấy thông tin sản phẩm từ database và hiển thị
 @app.route('/')
 def index():
+    # Connect to the database and fetch products
+    conn = sqlite3.connect(sqldbname)
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM products')
+    products = cursor.fetchall()
+    conn.close()
+
     # Check if 'username' key exists in the session
+    if 'current_user' in session:
+        current_username = session['current_user']['name']
+    else:
+        current_username = ""
+
+    # Render the index.html template with products and username
+    return render_template('index.html', products=products, search_text="", user_name=current_username)
+
+@app.route('/search_pr')
+def search_pr():
     if 'current_user' in session:
         current_username = session['current_user']['name']
     else:
@@ -19,7 +63,6 @@ def index():
         'SearchWithCSSDataDBAddToCartTable.html',
         search_text="",
         user_name = current_username)
-
 @app.route('/get_pr', methods = ['GET'])
 def get_pr():
     response = requests.get('http://127.0.0.1:5000/products')
@@ -70,7 +113,7 @@ def login():
                 "email": obj_user[2]
             }
             session['current_user'] = obj_user
-        return redirect('/')
+        return redirect(url_for('index'))
     # Trường hợp mặc định là vào trang login
     return render_template('login.html')
 
@@ -281,7 +324,7 @@ def proceed_cart():
     status = 1  # Replace this with the actual status (e.g., processing, shipped, etc.)
     # Insert the order into the "order" table
     cursor.execute('''
-        INSERT INTO "orders" (UserID, UserEmail, UserAddress, 
+        INSERT INTO "order" (UserID, UserEmail, UserAddress,
         UserPhone, PurchaseDate, ShipDate, status)
         VALUES (?, ?, ?, ?, ?, ?, ?)
     ''', (user_id, user_email, user_address,
@@ -320,7 +363,6 @@ def proceed_cart():
 @app.route('/orders/', defaults={'order_id': None}, methods=['GET'])
 @app.route('/orders/<int:order_id>/', methods=['GET'])
 def orders(order_id):
-    sqldbname = 'db/website.db'
     #if 'current_user' in session:
     #    user_id = session['current_user']['id']
     user_id = session.get('current_user', {}).get('id')
@@ -330,7 +372,7 @@ def orders(order_id):
         if order_id is not None:
             cursor.execute('SELECT * FROM "order" WHERE id = ? AND user_id = ?', (order_id, user_id))
             order = cursor.fetchone()
-            cursor.execute('SELECT * FROM order_details WHERE order_id = ?', (order_id,))
+            cursor.execute('SELECT * FROM order_detail WHERE order_id = ?', (order_id,))
             order_details = cursor.fetchall()
             conn.close()
             return render_template('order_details.html', order=order, order_details=order_details)

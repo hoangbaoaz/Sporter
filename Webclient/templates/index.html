@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sporter</title>
+
+
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- montserrat font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <!-- anta font -->
+    <link href="https://fonts.googleapis.com/css2?family=Anta&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
+    <!--inter-->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <!-- animate css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <!--owl carousel-->
+    <link rel="stylesheet" href="../static/owl.carousel.min.css">
+    <link rel="stylesheet" href="../static/owl.theme.default.min.css">
+
+
+
+    <!-- css -->
+    <link rel="stylesheet" href="../static/main.css">
+</head>
+<body>
+    <!-- learn more/see details -->
+    <section class="seeDetails">
+        <div class="seeDetails__content container-fluid">
+            <div class="details">
+                <p class="changeDetail">FREE AND EASY RETURN</p>
+                <a href="{{ url_for('seeDetails') }}">SEE DETAILS</a>
+            </div>
+        </div>
+    </section>
+    <!-- header -->
+    <header>
+        <div class="header__content">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                <a class="navbar-brand me-4" href="./index.html">SPORTER</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#national">Áo đội tuyển</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#aoClb">Áo câu lạc bộ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#shoes">Giày đá bóng</a>
+                        </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Sản phẩm khác
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="./updating.html">Đồ bơi</a></li>
+                                    <li><a class="dropdown-item" href="./updating.html">Phụ kiện thể thao</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <a href="{{ url_for('searchPage') }}">
+                        <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search"
+                        aria-label="Search" id="header-search">
+                        </form>
+                        </a>
+
+                        <div class="header__icon">
+                            <a href="./checkout.html"><i class="fa-solid fa-cart-shopping"></i></a>
+                            <a href=""><i class="fa-regular fa-heart"></i></a>
+                            <a href="{{ url_for('changeToLogin') }}"><i class="fa-regular fa-user"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!--shoes-->
+    <section class="shoes section" id="shoes">
+
+        <div class="shoes__content">
+            <div class="row">
+                {% for product in products %}
+                <div class="col-md-6 col-lg-4 col-xl-3 col-xxl-3">
+                    <div class="shoes-img">
+                        <div class="shoes-img-detail">
+                            <img src="{{product[3]}}" alt="" class="img-fluid">
+                            <div class="shoes-item-detail">
+                                <button>
+                                    <a href="./checkout.html">Buy now...</a>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="shoes-price">
+                            <h6>{{product[2]}}</h6>
+                            <div>
+                                <span><i class="fa-solid fa-cart-shopping"></i></span>
+                                <span><i class="fa-regular fa-heart" id="heart"></i></span>
+                            </div>
+                        </div>
+                        <p>{{ product[1] }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- footer -->
+    <footer>
+        <div class="footer__content">
+            <div class="footer__support">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-xl-9 col-xxl-9">
+                        <div class="row footer__support--left">
+                            <div class="col-sm-12 col-md-4 col-xl-4">
+                                <h5>SUPPORT</h5>
+                                <ul>
+                                    <li><a href="./returnAndExchange.html">Contact Us</a></li>
+                                    <li><a href="./returnAndExchange.html">Shipping and Delivery</a></li>
+                                    <li><a href="./updating.html">Terms & Conditions</a></li>
+                                    <li><a href="./updating.html">Transparency in Supply Chain</a></li>
+                                    <li><a href="./updating.html">Store Locator</a></li>
+                                    <li><a href="./updating.html">Buy a Gift Card</a></li>
+                                    <li><a href="./updating.html">Service Discount</a></li>
+                                    <li><a href="./updating.html">Refer a Friend</a></li>
+                                    <li><a href="./updating.html">Cookie Settings</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-12 col-md-4 col-xl-4">
+                                <h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h5>
+                                <ul>
+                                    <li><a href="./returnAndExchange.html">FAQ</a></li>
+                                    <li><a href="./updating.html">Return Policy</a></li>
+                                    <li><a href="./returnAndExchange.html">Privacy Policy</a></li>
+                                    <li><a href="./updating.html">Do Not Sell or Share My Information</a></li>
+                                    <li><a href="./updating.html">TUanh NYC Flagship Store</a></li>
+                                    <li><a href="./updating.html">Gift Card Balance</a></li>
+                                    <li><a href="./updating.html">Student Discount</a></li>
+                                    <li><a href="./updating.html">Promotion Exclusions</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-12 col-md-4 col-xl-4">
+                                <h5>ABOUT</h5>
+                                <ul>
+                                    <li><a href="./updating.html">Company</a></li>
+                                    <li><a href="./updating.html">Corporate News</a></li>
+                                    <li><a href="./updating.html">Press Center</a></li>
+                                    <li><a href="./updating.html">#REFORM</a></li>
+                                    <li><a href="./updating.html">Investors</a></li>
+                                    <li><a href="./updating.html">Sustainability</a></li>
+                                    <li><a href="./updating.html">Careers</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-xl-3 col-xxl-3 stay-update">
+                        <h5>STAY TO UPDATE</h5>
+                        <a href="{{ url_for('changeToLogin') }}"><p>Sign Up For Email</p></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer__contact">
+                <div class="row">
+                    <div class="footer__contact--icon col-lg-12 col-xl-6">
+                        <a href="https://github.com/tuanhsitde" target="_blank"><i class="fa-brands fa-github"></i></a>
+                        <a href="https://twitter.com/NguynTunAn54179" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://www.pinterest.com/nonoanhne2910/" target="_blank"><i class="fa-brands fa-pinterest"></i></a>
+                        <a href="https://www.instagram.com/tanh_2910/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=100040992888590" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                    </div>
+
+                    <div class="col-xl-6 copyRight">
+                        <div>
+                            <p>Design & Developer by <span><a href="https://github.com/tuanhsitde">Tuanh Nguyen</a></span></p>
+                            <p>COPYRIGHT © 2024</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!--jquery-->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!--jquery waypoint-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/noframework.waypoints.min.js" integrity="sha512-fHXRw0CXruAoINU11+hgqYvY/PcsOWzmj0QmcSOtjlJcqITbPyypc8cYpidjPurWpCnlB8VKfRwx6PIpASCUkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!--bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <!--owl carousel-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="/Users/chicken/Documents/WORKSPACE/sporter/flaskProject/js/owl.carousel.min.js"></script>
+    <script>
+
+        $('.club__carousel').owlCarousel({
+            loop:true,
+            margin:15,
+            nav:true,
+            responsive:{
+                0:{
+                    items:1
+                },
+                700:{
+                    items:2
+                },
+                800:{
+                    items:3
+                },
+                1000:{
+                    items:4
+                }
+            }
+        })
+        $('.national__carousel').owlCarousel({
+            loop:false,
+            margin:10,
+            nav:true,
+            responsive:{
+                0:{
+                    items:1
+                },
+                600:{
+                    items:2
+                },
+                900:{
+                    items:3
+                },
+                1180:{
+                    items:4
+                   },
+                1350:{
+                    items:5
+                }
+            }
+        })
+    </script>
+
+
+    <!--js-->
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>
