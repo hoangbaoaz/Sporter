@@ -9,13 +9,13 @@
 </head>
 <body>
     <h1>Search Example with Flask</h1>
-     <h3>
-        {% if user_name %}
-            Hello, {{ user_name }} <a href="/logout">Logout</a>
-        {%  else  %}
-            Welcome! <a href="/login">Login</a>
-        {%  endif  %}
-    </h3>
+<!--     <h3>-->
+<!--        {% if user_name %}-->
+<!--            Hello, {{ user_name }} <a href="/logout">Logout</a>-->
+<!--        {%  else  %}-->
+<!--            Welcome! <a href="/login">Login</a>-->
+<!--        {%  endif  %}-->
+<!--    </h3>-->
     <a href="{{ url_for('view_cart') }}">View Cart</a>
     <a href="{{ url_for('view_cart') }}">
         <img class="shopping-cart-icon"

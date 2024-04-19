@@ -47,10 +47,7 @@ def index():
         current_username = ""
 
     # Render the appropriate template based on the session
-    if current_username:
-        return render_template('index.html', products=products, search_text="", user_name=current_username)
-    else:
-        return render_template('SearchWithCSSDataDBAddToCartTable.html', search_text="", user_name="")
+    return render_template('index.html', products=products, search_text="", user_name=current_username)
 
 @app.route('/search_pr')
 def search_pr():
@@ -88,6 +85,7 @@ def register():
     else:
         return render_template('login.html')
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -98,18 +96,21 @@ def login():
         if obj_user is not None:
             obj_user = {
                 "id": obj_user[0],
-                "name": obj_user[1],
-                "email": obj_user[2]
+                "name": obj_user[2],
+                "email": obj_user[3]
             }
             session['current_user'] = obj_user
-            # Redirect to the main page after successful login
-            return redirect('/')
+
+            # Redirect to different URLs based on username
+            if obj_user["email"] == "admin@gmail.com":
+                return redirect('http://127.0.0.1:5005/')
+            else:
+                return redirect('/')
         else:
             flash('Invalid email or password. Please try again.')
 
     # Default case: render the login page
     return render_template('login.html')
-
 
 
 def check_exists(UserEmail, Password):
